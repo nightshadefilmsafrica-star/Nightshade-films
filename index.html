@@ -30,41 +30,44 @@ background:#ffcc00;left:0;bottom:-5px;transition:.3s}
 nav a:hover::after {width:100%}
 nav a:hover {color:#ffcc00}
 
-/* HERO */
+/* HERO WITH SLIDESHOW */
 .hero {
-height:100vh;display:flex;align-items:flex-start;
-justify-content:center;margin-top:70px;
-position:relative;overflow:hidden;
-background: url('https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck') center/cover no-repeat;
+height:100vh;
+display:flex;align-items:flex-start;
+justify-content:center;
+margin-top:70px;
+position:relative;
+overflow:hidden;
 background-size: cover;
 background-position: center;
+transition: background-image 1s ease-in-out;
 }
 
-/* HERO H1 with letter wave & scroll */
 .hero h1 {
 position:absolute;
-top:30px;left:50%;
+top:50px; left:50%;
 transform:translateX(-50%);
 display:flex;flex-wrap:wrap;justify-content:center;
 text-align:center;max-width:90%;
 font-size:3rem;
 font-weight:700;
-background: rgba(0,0,0,0.6);
-padding:20px;border-radius:10px;
-text-shadow:2px 2px 10px black;
+color:#ffcc00;
+background: rgba(0,0,0,0.5);
+padding:15px 25px;
+border-radius:10px;
+text-shadow:2px 2px 8px black;
+z-index:10;
+transition: transform 0.1s ease-out;
 }
 
-/* Letters animation */
-.hero h1 span {
-display:inline-block;
-animation: floatWave 2s infinite ease-in-out;
-}
+.hero h1 span {display:inline-block;animation:floatWave 2s ease-in-out infinite;}
+
 @keyframes floatWave {
-0% { transform: translateY(0px);}
-25% { transform: translateY(-8px);}
-50% { transform: translateY(0px);}
-75% { transform: translateY(8px);}
-100% { transform: translateY(0px);}
+0% { transform: translateY(0px); }
+25% { transform: translateY(-8px); }
+50% { transform: translateY(0px); }
+75% { transform: translateY(8px); }
+100% { transform: translateY(0px); }
 }
 
 /* SECTIONS */
@@ -84,18 +87,65 @@ background:#111;color:white;cursor:pointer
 /* INSTAGRAM STYLE GALLERY */
 .gallery {
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:10px;
 }
 
-.item img, .item video {
-width:100%;height:150px;
-object-fit:cover;border-radius:8px;
-cursor:pointer;transition:0.3s;
+.item {
+position:relative;
+overflow:hidden;
+border-radius:10px;
+cursor:pointer;
+transition: transform 0.3s;
 }
-.item:hover img, .item:hover video {transform: scale(1.05);}
-.caption {text-align:center;font-size:12px;color:#ffcc00;margin-top:3px;}
-.item.wedding {grid-column: span 2; height:200px;} 
+.item:hover {transform: scale(1.05);}
+
+.item img, .item video {
+width:100%;height:180px;
+object-fit:cover;
+display:block;
+border-radius:10px;
+transition: 0.3s;
+}
+
+.caption {
+position:absolute;
+bottom:5px;left:5px;
+color:#ffcc00;
+font-size:12px;
+background:rgba(0,0,0,0.5);
+padding:3px 6px;
+border-radius:5px;
+}
+
+/* LIKE ICON */
+.heart {
+position:absolute;
+top:8px;right:8px;
+width:24px;height:24px;
+background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+opacity:0.9;
+cursor:pointer;
+transition: transform 0.2s;
+}
+.heart.liked {
+background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+animation: heartPulse 0.5s ease forwards;
+}
+
+@keyframes heartPulse {
+0% {transform: scale(1);}
+50% {transform: scale(1.5) translateY(-5px);}
+100% {transform: scale(1.2);}
+}
+
+.like-counter {
+position:absolute;
+top:8px;right:40px;
+color:white;font-size:12px;
+text-shadow: 1px 1px 4px black;
+transition: transform 0.3s;
+}
 
 /* LIGHTBOX */
 .lightbox {
@@ -110,15 +160,35 @@ justify-content:center;z-index:2000
 input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none;color:white}
 .btn {border:1px solid #ffcc00;color:#ffcc00;background:none;padding:10px}
 
-/* WHATSAPP */
-.whatsapp {position:fixed;bottom:20px;right:20px;background:green;padding:15px;border-radius:50%;color:white}
+/* WHATSAPP MODERN BAR */
+.whatsapp-bar {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: #25D366;
+color: white;
+padding: 12px 18px;
+border-radius: 30px;
+text-decoration: none;
+font-weight: 600;
+display: flex;
+align-items: center;
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+transition: transform 0.2s, box-shadow 0.2s;
+z-index: 1000;
+}
+.whatsapp-bar:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+.whatsapp-bar img {height:24px;margin-right:8px;}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo"><img src="YOUR_LOGO_LINK"></div>
+<div class="logo"><img src="https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/IMG_6607_ofm9il"></div>
 <nav>
 <a href="#home">Home</a>
 <a href="#gallery">Gallery</a>
@@ -128,7 +198,8 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 </header>
 
 <section id="home" class="hero">
-<h1 id="hero-text">Nightshade Films</h1>
+<h1 id="hero-text">Behind every glossy shot is a tale of grit🎬
+🫶🏾Your story my vision🫰🏾</h1>
 </section>
 
 <section id="gallery">
@@ -157,28 +228,32 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 
 <section id="contact">
 <h2>Contact</h2>
-<p>Email: your@email.com</p>
+<p>Email: nihtshadefilmsafrica@gmail.com</p>
 </section>
 
-<a class="whatsapp" href="https://wa.me/YOUR_WHATSAPP_NUMBER">Chat</a>
+<!-- Modern WhatsApp bar -->
+<a class="whatsapp-bar" href="https://wa.me/254707181513" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"> Chat with us
+</a>
 
 <div class="lightbox" onclick="this.style.display='none'">
 <img id="lightImg">
 </div>
 
 <script>
-// 🌟 Media array
+// 🌟 Media array with initial likes
 const media = [
-  {type:"image", src:"https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck", category:"wedding", caption:"Wedding"},
-  {type:"image", src:"YOUR_IMAGE_2", category:"burial", caption:"Burial"},
-  {type:"image", src:"YOUR_IMAGE_3", category:"church", caption:"Church"},
-  {type:"video", src:"YOUR_VIDEO_LINK", category:"live", caption:"Livestream"}
+  {type:"image", src:"https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck", category:"wedding", caption:"Wedding", likes:0},
+  {type:"image", src:"YOUR_IMAGE_2", category:"burial", caption:"Burial", likes:0},
+  {type:"image", src:"YOUR_IMAGE_3", category:"church", caption:"Church", likes:0},
+  {type:"video", src:"YOUR_VIDEO_LINK", category:"live", caption:"Livestream", likes:0}
 ];
 
 const gallery = document.getElementById("gallery-container");
-media.forEach(item=>{
+media.forEach((item, index)=>{
   const div = document.createElement("div");
   div.className = "item "+item.category;
+
   if(item.type==="image"){
     const img = document.createElement("img");
     img.src = item.src;
@@ -191,10 +266,39 @@ media.forEach(item=>{
     vid.controls = true;
     div.appendChild(vid);
   }
+
+  // Caption
   const cap = document.createElement("div");
   cap.className="caption";
   cap.innerText = item.caption;
   div.appendChild(cap);
+
+  // Heart icon
+  const heart = document.createElement("div");
+  heart.className="heart";
+  div.appendChild(heart);
+
+  // Like counter
+  const counter = document.createElement("div");
+  counter.className="like-counter";
+  counter.innerText = item.likes;
+  div.appendChild(counter);
+
+  // Heart click with pulse animation
+  heart.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(!heart.classList.contains("liked")){
+      heart.classList.add("liked");
+      item.likes++;
+      counter.innerText = item.likes;
+      setTimeout(()=>heart.classList.remove("liked"), 600); // reset pulse
+    } else {
+      heart.classList.remove("liked");
+      item.likes--;
+      counter.innerText = item.likes;
+    }
+  });
+
   gallery.appendChild(div);
 });
 
@@ -219,17 +323,11 @@ box.style.display="flex";
 function sendWhatsApp(e){
 e.preventDefault();
 let msg=`Booking:%0AName:${name.value}%0ADate:${date.value}%0ADetails:${details.value}`;
-window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${msg}`);
+window.open(`https://wa.me/254707181513text=${msg}`);
 }
 
-// 🌊 Scroll-responsive hero float
+// 🌊 Hero H1 wave animation
 const heroH1 = document.getElementById("hero-text");
-window.addEventListener("scroll", ()=>{
-  const offset = window.scrollY * 0.2;
-  heroH1.style.transform = `translateX(-50%) translateY(${offset}px)`;
-});
-
-// ✨ Split H1 letters for wave
 const text = heroH1.innerText;
 heroH1.innerHTML = "";
 text.split("").forEach((char,i)=>{
@@ -238,6 +336,27 @@ text.split("").forEach((char,i)=>{
   span.style.animationDelay = (i*0.1)+"s";
   heroH1.appendChild(span);
 });
+
+// 🌊 Scroll float
+window.addEventListener("scroll", ()=>{
+  const offset = window.scrollY * 0.2;
+  heroH1.style.transform = `translateX(-50%) translateY(${offset}px)`;
+});
+
+// 🌟 HERO SLIDESHOW
+const heroImages = [
+  "https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck",
+  "YOUR_SECOND_IMAGE_LINK",
+  "YOUR_THIRD_IMAGE_LINK"
+];
+let currentIndex = 0;
+const hero = document.querySelector(".hero");
+function changeHeroBg() {
+  currentIndex = (currentIndex + 1) % heroImages.length;
+  hero.style.backgroundImage = `url('${heroImages[currentIndex]}')`;
+}
+hero.style.backgroundImage = `url('${heroImages[0]}')`;
+setInterval(changeHeroBg, 5000);
 </script>
 
 </body>
