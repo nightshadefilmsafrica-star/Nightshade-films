@@ -40,19 +40,31 @@ background-size: cover;
 background-position: center;
 }
 
-/* HERO H1 with scroll-responsive wave */
+/* HERO H1 with letter wave & scroll */
 .hero h1 {
+position:absolute;
+top:30px;left:50%;
+transform:translateX(-50%);
+display:flex;flex-wrap:wrap;justify-content:center;
+text-align:center;max-width:90%;
+font-size:3rem;
+font-weight:700;
 background: rgba(0,0,0,0.6);
-padding: 20px;
-border-radius: 10px;
-text-align: center;
-position: absolute;
-top: 30px;
-left: 50%;
-transform: translateX(-50%);
-max-width: 90%;
-text-shadow: 2px 2px 10px black;
-transition: transform 0.1s ease-out; /* smooth scroll movement */
+padding:20px;border-radius:10px;
+text-shadow:2px 2px 10px black;
+}
+
+/* Letters animation */
+.hero h1 span {
+display:inline-block;
+animation: floatWave 2s infinite ease-in-out;
+}
+@keyframes floatWave {
+0% { transform: translateY(0px);}
+25% { transform: translateY(-8px);}
+50% { transform: translateY(0px);}
+75% { transform: translateY(8px);}
+100% { transform: translateY(0px);}
 }
 
 /* SECTIONS */
@@ -79,8 +91,7 @@ gap:10px;
 .item img, .item video {
 width:100%;height:150px;
 object-fit:cover;border-radius:8px;
-cursor:pointer;
-transition: 0.3s;
+cursor:pointer;transition:0.3s;
 }
 .item:hover img, .item:hover video {transform: scale(1.05);}
 .caption {text-align:center;font-size:12px;color:#ffcc00;margin-top:3px;}
@@ -107,7 +118,7 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 <body>
 
 <header>
-<div class="logo"><img src="">https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck</div>
+<div class="logo"><img src="YOUR_LOGO_LINK"></div>
 <nav>
 <a href="#home">Home</a>
 <a href="#gallery">Gallery</a>
@@ -117,7 +128,7 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 </header>
 
 <section id="home" class="hero">
-<h1>Nightshade Films</h1>
+<h1 id="hero-text">Nightshade Films</h1>
 </section>
 
 <section id="gallery">
@@ -131,9 +142,7 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 <button onclick="filter('live')">Livestream</button>
 </div>
 
-<div class="gallery" id="gallery-container">
-<!-- Images load automatically -->
-</div>
+<div class="gallery" id="gallery-container"></div>
 </section>
 
 <section id="booking">
@@ -148,12 +157,11 @@ input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none
 
 <section id="contact">
 <h2>Contact</h2>
-<p>Email: nightshadefilmsafrica@gmail.com</p>
+<p>Email: your@email.com</p>
 </section>
 
-<a class="whatsapp" href="https://wa.me/254707181513">Chat</a>
+<a class="whatsapp" href="https://wa.me/YOUR_WHATSAPP_NUMBER">Chat</a>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" onclick="this.style.display='none'">
 <img id="lightImg">
 </div>
@@ -211,14 +219,24 @@ box.style.display="flex";
 function sendWhatsApp(e){
 e.preventDefault();
 let msg=`Booking:%0AName:${name.value}%0ADate:${date.value}%0ADetails:${details.value}`;
-window.open(`https://wa.me/254707181513text=${msg}`);
+window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${msg}`);
 }
 
-// 🌊 Scroll-responsive wave motion for hero H1
+// 🌊 Scroll-responsive hero float
+const heroH1 = document.getElementById("hero-text");
 window.addEventListener("scroll", ()=>{
-  const h1 = document.querySelector(".hero h1");
-  const offset = window.scrollY * 0.2; // adjust speed
-  h1.style.transform = `translateX(-50%) translateY(${offset}px)`;
+  const offset = window.scrollY * 0.2;
+  heroH1.style.transform = `translateX(-50%) translateY(${offset}px)`;
+});
+
+// ✨ Split H1 letters for wave
+const text = heroH1.innerText;
+heroH1.innerHTML = "";
+text.split("").forEach((char,i)=>{
+  const span = document.createElement("span");
+  span.innerText = char;
+  span.style.animationDelay = (i*0.1)+"s";
+  heroH1.appendChild(span);
 });
 </script>
 
