@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nightshade Films</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {margin:0;font-family:Poppins;background:#050505;color:white}
+
+/* HEADER */
+header {
+position:fixed;width:100%;top:0;
+display:flex;justify-content:center;align-items:center;
+padding:15px;z-index:1000;
+background: rgba(0,0,0,0.7);
+backdrop-filter: blur(6px);
+}
+.logo {position:absolute;left:20px}
+.logo img {height:40px}
+
+/* NAV */
+nav {display:flex;gap:25px}
+nav a {color:white;text-decoration:none;position:relative;font-weight:600;}
+nav a::after {
+content:"";position:absolute;width:0;height:2px;
+background:#ffcc00;left:0;bottom:-5px;transition:.3s}
+nav a:hover::after {width:100%}
+nav a:hover {color:#ffcc00}
+
+/* HERO */
+.hero {
+height:100vh;display:flex;align-items:center;
+justify-content:center;margin-top:70px;
+position:relative;overflow:hidden;
+background: url('https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/IMG_2488_a6s7xc') center/cover no-repeat;
+background-size: cover;
+background-position: center;
+}
+.hero h1 {
+background:rgba(0,0,0,0.6);padding:20px;
+border-radius:10px;text-align:center;
+animation:fade 1.5s forwards
+}
+@keyframes fade {
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;text-shadow:0 0 10px #ffcc00}
+}
+
+/* SECTIONS */
+section {padding:80px 20px}
+h2{text-align:center;color:#ffcc00}
+
+/* FILTER BUTTONS */
+.filters {text-align:center;margin-bottom:20px}
+.filters button {
+margin:5px;padding:8px 15px;
+border:none;border-radius:20px;
+background:#111;color:white;cursor:pointer
+}
+.filters button.active,
+.filters button:hover {background:#ffcc00;color:black}
+
+/* INSTAGRAM STYLE GALLERY */
+.gallery {
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:10px;
+}
+
+.item img, .item video {
+width:100%;height:150px;
+object-fit:cover;border-radius:8px;
+cursor:pointer;
+transition: 0.3s;
+}
+.item:hover img, .item:hover video {transform: scale(1.05);}
+.caption {text-align:center;font-size:12px;color:#ffcc00;margin-top:3px;}
+
+/* LIGHTBOX */
+.lightbox {
+position:fixed;top:0;left:0;width:100%;
+height:100%;background:rgba(0,0,0,0.9);
+display:none;align-items:center;
+justify-content:center;z-index:2000
+}
+.lightbox img, .lightbox video {max-width:90%;max-height:90%;}
+
+/* FORM */
+input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none;color:white}
+.btn {border:1px solid #ffcc00;color:#ffcc00;background:none;padding:10px}
+
+/* WHATSAPP */
+.whatsapp {position:fixed;bottom:20px;right:20px;background:green;padding:15px;border-radius:50%;color:white}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo"><img src="YOUR_LOGO_LINK"></div>
+<nav>
+<a href="#home">Home</a>
+<a href="#gallery">Gallery</a>
+<a href="#booking">Booking</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section id="home" class="hero">
+<h1>Behind every glossy shot is a tale of grit 🩶</h1>
+</section>
+
+<section id="gallery">
+<h2>Gallery</h2>
+
+<div class="filters">
+<button onclick="filter('all')" class="active">All</button>
+<button onclick="filter('wedding')">Wedding</button>
+<button onclick="filter('burial')">Burial</button>
+<button onclick="filter('church')">Church</button>
+<button onclick="filter('live')">Livestream</button>
+</div>
+
+<div class="gallery" id="gallery-container">
+<!-- Images will load automatically here -->
+</div>
+</section>
+
+<section id="booking">
+<h2>Book</h2>
+<form onsubmit="sendWhatsApp(event)">
+<input id="name" placeholder="Name">
+<input id="date" type="date">
+<textarea id="details"></textarea>
+<button class="btn">Send</button>
+</form>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<p>Email: nightshadefilmsafrica@email.com</p>
+</section>
+
+<a class="whatsapp" href="https://wa.me/254707181513">Chat</a>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" onclick="this.style.display='none'">
+<img id="lightImg">
+</div>
+
+<script>
+// 🌟 ADD ALL YOUR CLOUDINARY MEDIA HERE
+const media = [
+  {type:"image", src:"https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/IMG_2488_a6s7xc", category:"wedding", caption:"Wedding"},
+  {type:"image", src:"YOUR_IMAGE_2", category:"burial", caption:"Burial"},
+  {type:"image", src:"YOUR_IMAGE_3", category:"church", caption:"Church"},
+  {type:"video", src:"YOUR_VIDEO_LINK", category:"live", caption:"Livestream"}
+];
+
+const gallery = document.getElementById("gallery-container");
+media.forEach(item=>{
+  const div = document.createElement("div");
+  div.className = "item "+item.category;
+  if(item.type==="image"){
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.onclick = ()=>openLight(item.src);
+    div.appendChild(img);
+  } else {
+    const vid = document.createElement("video");
+    vid.src = item.src;
+    vid.onclick = ()=>openLight(item.src);
+    vid.controls = true;
+    div.appendChild(vid);
+  }
+  const cap = document.createElement("div");
+  cap.className="caption";
+  cap.innerText = item.caption;
+  div.appendChild(cap);
+  gallery.appendChild(div);
+});
+
+// FILTER FUNCTION
+function filter(type){
+document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+event.target.classList.add("active");
+document.querySelectorAll(".item").forEach(el=>{
+  el.style.display=(type==="all"||el.classList.contains(type))?"block":"none";
+});
+}
+
+// LIGHTBOX
+function openLight(src){
+let box=document.querySelector(".lightbox");
+let img=document.getElementById("lightImg");
+img.src=src;
+box.style.display="flex";
+}
+
+// WHATSAPP BOOKING
+function sendWhatsApp(e){
+e.preventDefault();
+let msg=`Booking:%0AName:${name.value}%0ADate:${date.value}%0ADetails:${details.value}`;
+window.open(`https://wa.me/254707181513 text=${msg}`);
+}
+</script>
+
+</body>
+</html>
