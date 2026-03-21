@@ -4,341 +4,358 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nightshade Films</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
---bg:#050505;
---text:white;
---card:#111;
-}
-.light-mode{
---bg:white;
---text:black;
---card:#eee;
-}
-
-body{
-margin:0;
-font-family:Poppins;
-background:var(--bg);
-color:var(--text);
-}
+body {margin:0;font-family:Poppins;background:#050505;color:white}
 
 /* HEADER */
-header{
-position:fixed;top:0;width:100%;
+header {
+position:fixed;width:100%;top:0;
 display:flex;justify-content:center;align-items:center;
-padding:15px;
-background:rgba(0,0,0,0.7);
-z-index:1000;
+padding:15px;z-index:1000;
+background: rgba(0,0,0,0.7);
+backdrop-filter: blur(6px);
 }
-.logo{position:absolute;left:20px;font-weight:700;font-size:1.2rem;}
-.menu-toggle{display:none;position:absolute;right:20px;font-size:28px;cursor:pointer}
-nav{display:flex;gap:25px}
-nav a{color:var(--text);text-decoration:none;font-weight:600}
+.logo {position:absolute;left:20px}
+.logo img {height:40px}
 
-/* HERO */
-.hero{
+/* NAV */
+nav {display:flex;gap:25px}
+nav a {color:white;text-decoration:none;position:relative;font-weight:600;}
+nav a::after {
+content:"";position:absolute;width:0;height:2px;
+background:#ffcc00;left:0;bottom:-5px;transition:.3s}
+nav a:hover::after {width:100%}
+nav a:hover {color:#ffcc00}
+
+/* HERO WITH SLIDESHOW */
+.hero {
 height:100vh;
+display:flex;align-items:flex-start;
+justify-content:center;
 margin-top:70px;
-background-size:cover;
-background-position:center;
 position:relative;
+overflow:hidden;
+background-size: cover;
+background-position: center;
+transition: background-image 1s ease-in-out;
 }
-.hero h1{
-position:absolute;top:40px;left:50%;
+
+.hero h1 {
+position:absolute;
+top:50px; left:50%;
 transform:translateX(-50%);
+display:flex;flex-wrap:wrap;justify-content:center;
+text-align:center;max-width:90%;
 font-size:3rem;
-background:rgba(0,0,0,0.5);
+font-weight:700;
+color:#ffcc00;
+background: rgba(0,0,0,0.5);
 padding:15px 25px;
 border-radius:10px;
-display:flex;flex-wrap:wrap;justify-content:center;
-word-spacing:0.3em;
+text-shadow:2px 2px 8px black;
+z-index:10;
+transition: transform 0.1s ease-out;
 }
-.hero h1 span{
-display:inline-block;
-animation:wave 2s infinite;
-}
-@keyframes wave{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-8px)}
+
+.hero h1 span {display:inline-block;animation:floatWave 2s ease-in-out infinite;}
+
+@keyframes floatWave {
+0% { transform: translateY(0px); }
+25% { transform: translateY(-8px); }
+50% { transform: translateY(0px); }
+75% { transform: translateY(8px); }
+100% { transform: translateY(0px); }
 }
 
 /* SECTIONS */
-section{padding:80px 20px}
+section {padding:80px 20px}
 h2{text-align:center;color:#ffcc00}
 
-/* GALLERY */
-.gallery{
+/* FILTER BUTTONS */
+.filters {text-align:center;margin-bottom:20px}
+.filters button {
+margin:5px;padding:8px 15px;
+border:none;border-radius:20px;
+background:#111;color:white;cursor:pointer
+}
+.filters button.active,
+.filters button:hover {background:#ffcc00;color:black}
+
+/* INSTAGRAM STYLE GALLERY */
+.gallery {
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:10px;
 }
-.item{
+
+.item {
 position:relative;
 overflow:hidden;
 border-radius:10px;
 cursor:pointer;
+transition: transform 0.3s;
 }
-.item img, .item video{
-width:100%;
-height:200px;
+.item:hover {transform: scale(1.05);}
+
+.item img, .item video {
+width:100%;height:180px;
 object-fit:cover;
-transition:transform 0.3s;
-}
-.item:hover img, .item:hover video{
-transform:scale(1.05);
-}
-.caption{
-position:absolute;
-bottom:0; left:0;
-width:100%;
-background:rgba(0,0,0,0.5);
-color:white;
-font-size:12px;
-padding:4px 6px;
-text-align:center;
+display:block;
+border-radius:10px;
+transition: 0.3s;
 }
 
-/* HEART */
-.heart{
-position:absolute;top:8px;right:8px;
-width:24px;height:24px;
-background:url('https://cdn-icons-png.flaticon.com/512/833/833472.png') center/cover;
-cursor:pointer;
+.caption {
+position:absolute;
+bottom:5px;left:5px;
+color:#ffcc00;
+font-size:12px;
+background:rgba(0,0,0,0.5);
+padding:3px 6px;
+border-radius:5px;
 }
-.heart.liked{animation:pop 0.5s}
-@keyframes pop{50%{transform:scale(1.5)}}
+
+/* LIKE ICON */
+.heart {
+position:absolute;
+top:8px;right:8px;
+width:24px;height:24px;
+background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+opacity:0.9;
+cursor:pointer;
+transition: transform 0.2s;
+}
+.heart.liked {
+background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/cover;
+animation: heartPulse 0.5s ease forwards;
+}
+
+@keyframes heartPulse {
+0% {transform: scale(1);}
+50% {transform: scale(1.5) translateY(-5px);}
+100% {transform: scale(1.2);}
+}
+
+.like-counter {
+position:absolute;
+top:8px;right:40px;
+color:white;font-size:12px;
+text-shadow: 1px 1px 4px black;
+transition: transform 0.3s;
+}
 
 /* LIGHTBOX */
-.lightbox{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,0.9);
-display:none;justify-content:center;align-items:center;
-z-index:2000;
+.lightbox {
+position:fixed;top:0;left:0;width:100%;
+height:100%;background:rgba(0,0,0,0.9);
+display:none;align-items:center;
+justify-content:center;z-index:2000
 }
-.lightbox img,.lightbox video{max-width:90%;max-height:90%}
+.lightbox img, .lightbox video {max-width:90%;max-height:90%;}
 
 /* FORM */
-input,textarea,select{
-width:100%;padding:10px;margin:5px 0;
-background:var(--card);color:var(--text);border:none;
-}
-button{padding:10px;border:none;background:#ffcc00;color:black;cursor:pointer}
+input,textarea {width:100%;padding:10px;margin:5px 0;background:#111;border:none;color:white}
+.btn {border:1px solid #ffcc00;color:#ffcc00;background:none;padding:10px}
 
-/* WHATSAPP */
-.whatsapp{
-position:fixed;bottom:20px;right:20px;
-background:#25D366;color:white;
-padding:12px 20px;
-border-radius:8px;
-font-weight:600;
-text-decoration:none;
-display:flex;
-align-items:center;
-gap:8px;
-box-shadow:0 3px 6px rgba(0,0,0,0.3);
+/* WHATSAPP MODERN BAR */
+.whatsapp-bar {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: #25D366;
+color: white;
+padding: 12px 18px;
+border-radius: 30px;
+text-decoration: none;
+font-weight: 600;
+display: flex;
+align-items: center;
+box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+transition: transform 0.2s, box-shadow 0.2s;
+z-index: 1000;
 }
-
-/* THEME BUTTON */
-.theme-btn{
-position:fixed;bottom:20px;left:20px;
-background:#ffcc00;color:black;
-padding:10px;border-radius:20px;cursor:pointer;
+.whatsapp-bar:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
-
-/* MOBILE */
-@media(max-width:768px){
-.menu-toggle{display:block}
-nav{display:none;flex-direction:column;position:absolute;top:60px;width:100%;background:black}
-nav.show{display:flex}
-.hero{height:70vh}
-.hero h1{font-size:1.5rem}
-.gallery{grid-template-columns:repeat(2,1fr)}
-}
+.whatsapp-bar img {height:24px;margin-right:8px;}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox" style="position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:flex;justify-content:center;align-items:center;z-index:3000;">
-<div style="background:#111;padding:30px;border-radius:10px;text-align:center;">
-<h2>Admin Login</h2>
-<input id="username" placeholder="Username"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
-<button onclick="login()">Login</button>
-<p id="error" style="color:red;"></p>
-</div>
-</div>
-
 <header>
-<div class="logo">Nightshade</div>
-<div class="menu-toggle" onclick="toggleMenu()">☰</div>
-<nav id="nav">
+<div class="logo"><img src="YOUR_LOGO_LINK"></div>
+<nav>
 <a href="#home">Home</a>
 <a href="#gallery">Gallery</a>
 <a href="#booking">Booking</a>
+<a href="#contact">Contact</a>
 </nav>
 </header>
 
-<section class="hero" id="home">
+<section id="home" class="hero">
 <h1 id="hero-text">Nightshade Films</h1>
 </section>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" style="display:none;padding:20px;text-align:center;">
-<h3>Upload Media</h3>
-<input type="file" id="fileInput">
-<button onclick="logout()">Logout</button>
-</div>
-
-<!-- GALLERY -->
 <section id="gallery">
 <h2>Gallery</h2>
-<div class="gallery" id="gallery"></div>
-</section>
 
-<!-- BOOKING -->
-<section id="booking">
-<h2>Book & Pay</h2>
-<form onsubmit="startPayment(event)">
-<input id="name" placeholder="Name" required>
-<input id="date" type="date" required>
-<select id="service">
-<option value="Wedding - 15000">Wedding - KES 15,000</option>
-<option value="Burial - 10000">Burial - KES 10,000</option>
-<option value="Livestream - 8000">Livestream - KES 8,000</option>
-</select>
-<textarea id="details" placeholder="Event Details"></textarea>
-<button>Proceed</button>
-</form>
-
-<div id="paymentBox" style="display:none;background:#111;padding:15px;margin-top:10px;border-radius:10px;">
-<p>Send to: <b>254XXXXXXXXX</b></p>
-<p>Amount: <span id="amount"></span></p>
-<button onclick="confirmBooking()">I Have Paid</button>
+<div class="filters">
+<button onclick="filter('all')" class="active">All</button>
+<button onclick="filter('wedding')">Wedding</button>
+<button onclick="filter('burial')">Burial</button>
+<button onclick="filter('church')">Church</button>
+<button onclick="filter('live')">Livestream</button>
 </div>
+
+<div class="gallery" id="gallery-container"></div>
 </section>
 
-<div class="theme-btn" onclick="toggleTheme()">🌗</div>
-<a class="whatsapp" href="https://wa.me/254XXXXXXXXX" target="_blank">💬 Chat</a>
+<section id="booking">
+<h2>Book</h2>
+<form onsubmit="sendWhatsApp(event)">
+<input id="name" placeholder="Name">
+<input id="date" type="date">
+<textarea id="details"></textarea>
+<button class="btn">Send</button>
+</form>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<p>Email: your@email.com</p>
+</section>
+
+<!-- Modern WhatsApp bar -->
+<a class="whatsapp-bar" href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"> Chat with us
+</a>
 
 <div class="lightbox" onclick="this.style.display='none'">
 <img id="lightImg">
 </div>
 
 <script>
-/* LOGIN */
-const ADMIN_USER="admin";
-const ADMIN_PASS="1234";
+// 🌟 Media array with initial likes
+const media = [
+  {type:"image", src:"https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck", category:"wedding", caption:"Wedding", likes:0},
+  {type:"image", src:"YOUR_IMAGE_2", category:"burial", caption:"Burial", likes:0},
+  {type:"image", src:"YOUR_IMAGE_3", category:"church", caption:"Church", likes:0},
+  {type:"video", src:"YOUR_VIDEO_LINK", category:"live", caption:"Livestream", likes:0}
+];
 
-function login(){
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  if(user===ADMIN_USER && pass===ADMIN_PASS){
-    localStorage.setItem("admin","true");
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("adminPanel").style.display="block";
-  } else {
-    document.getElementById("error").innerText="Wrong login details";
-  }
-}
-
-window.onload=function(){
-  if(localStorage.getItem("admin")==="true"){
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("adminPanel").style.display="block";
-  }
-}
-
-/* LOGOUT */
-function logout(){
-  localStorage.removeItem("admin");
-  location.reload();
-}
-
-/* MENU */
-function toggleMenu(){
-  document.getElementById("nav").classList.toggle("show");
-}
-
-/* THEME */
-function toggleTheme(){
-  document.body.classList.toggle("light-mode");
-}
-
-/* HERO TEXT */
-let txt=document.getElementById("hero-text").innerText;
-document.getElementById("hero-text").innerHTML="";
-txt.split("").forEach((c,i)=>{
-  let s=document.createElement("span");
-  s.innerHTML=c===" "?"&nbsp;":c;
-  s.style.animationDelay=i*0.1+"s";
-  document.getElementById("hero-text").appendChild(s);
-});
-
-/* HERO SLIDE */
-let imgs=["https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck"];
-let i=0;
-setInterval(()=>{
-  i=(i+1)%imgs.length;
-  document.querySelector(".hero").style.backgroundImage=`url('${imgs[i]}')`;
-},4000);
-
-/* GALLERY ADD FUNCTION */
-function addMedia(src, type, caption=""){
+const gallery = document.getElementById("gallery-container");
+media.forEach((item, index)=>{
   const div = document.createElement("div");
-  div.className = "item";
+  div.className = "item "+item.category;
 
-  if(type==="image"){
+  if(item.type==="image"){
     const img = document.createElement("img");
-    img.src = src;
-    img.onclick = ()=>openLight(src);
+    img.src = item.src;
+    img.onclick = ()=>openLight(item.src);
     div.appendChild(img);
   } else {
     const vid = document.createElement("video");
-    vid.src = src;
+    vid.src = item.src;
+    vid.onclick = ()=>openLight(item.src);
     vid.controls = true;
     div.appendChild(vid);
   }
 
-  if(caption){
-    const cap = document.createElement("div");
-    cap.className = "caption";
-    cap.innerText = caption;
-    div.appendChild(cap);
-  }
+  // Caption
+  const cap = document.createElement("div");
+  cap.className="caption";
+  cap.innerText = item.caption;
+  div.appendChild(cap);
 
-  document.getElementById("gallery").appendChild(div);
+  // Heart icon
+  const heart = document.createElement("div");
+  heart.className="heart";
+  div.appendChild(heart);
+
+  // Like counter
+  const counter = document.createElement("div");
+  counter.className="like-counter";
+  counter.innerText = item.likes;
+  div.appendChild(counter);
+
+  // Heart click with pulse animation
+  heart.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(!heart.classList.contains("liked")){
+      heart.classList.add("liked");
+      item.likes++;
+      counter.innerText = item.likes;
+      setTimeout(()=>heart.classList.remove("liked"), 600); // reset pulse
+    } else {
+      heart.classList.remove("liked");
+      item.likes--;
+      counter.innerText = item.likes;
+    }
+  });
+
+  gallery.appendChild(div);
+});
+
+// FILTER FUNCTION
+function filter(type){
+document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+event.target.classList.add("active");
+document.querySelectorAll(".item").forEach(el=>{
+  el.style.display=(type==="all"||el.classList.contains(type))?"block":"none";
+});
 }
 
-/* EXAMPLE GALLERY ITEMS */
-addMedia("https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/IMG_2488_a6s7xc", "image", "Wedding Event");
-/* Add more like:
-addMedia("LINK","image/video","Caption");
-*/
-
-/* LIGHTBOX */
+// LIGHTBOX
 function openLight(src){
-  document.getElementById("lightImg").src=src;
-  document.querySelector(".lightbox").style.display="flex";
+let box=document.querySelector(".lightbox");
+let img=document.getElementById("lightImg");
+img.src=src;
+box.style.display="flex";
 }
 
-/* MPESA PAYMENT */
-function startPayment(e){
-  e.preventDefault();
-  let service=document.getElementById("service").value;
-  let amountVal=service.split("-")[1];
-  document.getElementById("amount").innerText="KES "+amountVal;
-  document.getElementById("paymentBox").style.display="block";
+// WHATSAPP BOOKING
+function sendWhatsApp(e){
+e.preventDefault();
+let msg=`Booking:%0AName:${name.value}%0ADate:${date.value}%0ADetails:${details.value}`;
+window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${msg}`);
 }
 
-function confirmBooking(){
-  let msg=`Booking:%0AName:${document.getElementById("name").value}%0AService:${document.getElementById("service").value}`;
-  window.open(`https://wa.me/254XXXXXXXXX?text=${msg}`);
+// 🌊 Hero H1 wave animation
+const heroH1 = document.getElementById("hero-text");
+const text = heroH1.innerText;
+heroH1.innerHTML = "";
+text.split("").forEach((char,i)=>{
+  const span = document.createElement("span");
+  span.innerText = char;
+  span.style.animationDelay = (i*0.1)+"s";
+  heroH1.appendChild(span);
+});
+
+// 🌊 Scroll float
+window.addEventListener("scroll", ()=>{
+  const offset = window.scrollY * 0.2;
+  heroH1.style.transform = `translateX(-50%) translateY(${offset}px)`;
+});
+
+// 🌟 HERO SLIDESHOW
+const heroImages = [
+  "https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck",
+  "YOUR_SECOND_IMAGE_LINK",
+  "YOUR_THIRD_IMAGE_LINK"
+];
+let currentIndex = 0;
+const hero = document.querySelector(".hero");
+function changeHeroBg() {
+  currentIndex = (currentIndex + 1) % heroImages.length;
+  hero.style.backgroundImage = `url('${heroImages[currentIndex]}')`;
 }
+hero.style.backgroundImage = `url('${heroImages[0]}')`;
+setInterval(changeHeroBg, 5000);
 </script>
 
 </body>
