@@ -182,6 +182,27 @@ transform: translateY(-3px);
 box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 .whatsapp-bar img {height:24px;margin-right:8px;}
+
+/* RESPONSIVE PHONE/LAPTOP */
+@media(max-width:1024px){
+.hero h1 {font-size:2.5rem;top:40px;}
+.gallery {grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+}
+
+@media(max-width:768px){
+.hero {height:70vh;}
+.hero h1 {font-size:1.8rem;top:30px;padding:10px 15px;}
+nav {flex-direction:column;gap:15px;background:rgba(0,0,0,0.9);position:absolute;top:60px;display:none;width:100%;text-align:center;}
+nav.show {display:flex;}
+.gallery {grid-template-columns:repeat(2,1fr);}
+.filters button {padding:6px 12px;font-size:12px;}
+}
+
+@media(max-width:480px){
+.hero h1 {font-size:1.5rem;top:20px;}
+.gallery {grid-template-columns:1fr;}
+.filters button {padding:5px 10px;font-size:11px;}
+}
 </style>
 </head>
 
@@ -189,7 +210,7 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 
 <header>
 <div class="logo"><img src="YOUR_LOGO_LINK"></div>
-<nav>
+<nav id="nav">
 <a href="#home">Home</a>
 <a href="#gallery">Gallery</a>
 <a href="#booking">Booking</a>
@@ -203,7 +224,6 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 
 <section id="gallery">
 <h2>Gallery</h2>
-
 <div class="filters">
 <button onclick="filter('all')" class="active">All</button>
 <button onclick="filter('wedding')">Wedding</button>
@@ -211,7 +231,6 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 <button onclick="filter('church')">Church</button>
 <button onclick="filter('live')">Livestream</button>
 </div>
-
 <div class="gallery" id="gallery-container"></div>
 </section>
 
@@ -230,7 +249,6 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 <p>Email: your@email.com</p>
 </section>
 
-<!-- Modern WhatsApp bar -->
 <a class="whatsapp-bar" href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank">
 <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp"> Chat with us
 </a>
@@ -240,7 +258,7 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 </div>
 
 <script>
-// 🌟 Media array with initial likes
+// MEDIA GALLERY
 const media = [
   {type:"image", src:"https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck", category:"wedding", caption:"Wedding", likes:0},
   {type:"image", src:"YOUR_IMAGE_2", category:"burial", caption:"Burial", likes:0},
@@ -249,10 +267,9 @@ const media = [
 ];
 
 const gallery = document.getElementById("gallery-container");
-media.forEach((item, index)=>{
+media.forEach((item)=>{
   const div = document.createElement("div");
   div.className = "item "+item.category;
-
   if(item.type==="image"){
     const img = document.createElement("img");
     img.src = item.src;
@@ -265,57 +282,44 @@ media.forEach((item, index)=>{
     vid.controls = true;
     div.appendChild(vid);
   }
-
-  // Caption
   const cap = document.createElement("div");
   cap.className="caption";
-  cap.innerText = item.caption;
+  cap.innerText=item.caption;
   div.appendChild(cap);
 
-  // Heart icon
+  // Heart + likes
   const heart = document.createElement("div");
   heart.className="heart";
   div.appendChild(heart);
-
-  // Like counter
   const counter = document.createElement("div");
   counter.className="like-counter";
-  counter.innerText = item.likes;
+  counter.innerText=item.likes;
   div.appendChild(counter);
 
-  // Heart click with pulse animation
-  heart.addEventListener("click", (e)=>{
+  heart.addEventListener("click",(e)=>{
     e.stopPropagation();
     if(!heart.classList.contains("liked")){
-      heart.classList.add("liked");
-      item.likes++;
-      counter.innerText = item.likes;
-      setTimeout(()=>heart.classList.remove("liked"), 600); // reset pulse
-    } else {
-      heart.classList.remove("liked");
-      item.likes--;
-      counter.innerText = item.likes;
-    }
+      heart.classList.add("liked"); item.likes++; counter.innerText=item.likes;
+      setTimeout(()=>heart.classList.remove("liked"),600);
+    } else { heart.classList.remove("liked"); item.likes--; counter.innerText=item.likes; }
   });
 
   gallery.appendChild(div);
 });
 
-// FILTER FUNCTION
+// FILTER
 function filter(type){
 document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
 event.target.classList.add("active");
 document.querySelectorAll(".item").forEach(el=>{
-  el.style.display=(type==="all"||el.classList.contains(type))?"block":"none";
+el.style.display=(type==="all"||el.classList.contains(type))?"block":"none";
 });
 }
 
 // LIGHTBOX
 function openLight(src){
-let box=document.querySelector(".lightbox");
-let img=document.getElementById("lightImg");
-img.src=src;
-box.style.display="flex";
+document.getElementById("lightImg").src=src;
+document.querySelector(".lightbox").style.display="flex";
 }
 
 // WHATSAPP BOOKING
@@ -325,38 +329,31 @@ let msg=`Booking:%0AName:${name.value}%0ADate:${date.value}%0ADetails:${details.
 window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${msg}`);
 }
 
-// 🌊 Hero H1 wave animation
-const heroH1 = document.getElementById("hero-text");
-const text = heroH1.innerText;
-heroH1.innerHTML = "";
-text.split("").forEach((char,i)=>{
-  const span = document.createElement("span");
-  span.innerText = char;
-  span.style.animationDelay = (i*0.1)+"s";
+// HERO WAVE
+const heroH1=document.getElementById("hero-text");
+const text=heroH1.innerText;
+heroH1.innerHTML="";
+text.split("").forEach((c,i)=>{
+  const span=document.createElement("span");
+  span.innerText=c;
+  span.style.animationDelay=(i*0.1)+"s";
   heroH1.appendChild(span);
 });
 
-// 🌊 Scroll float
-window.addEventListener("scroll", ()=>{
-  const offset = window.scrollY * 0.2;
-  heroH1.style.transform = `translateX(-50%) translateY(${offset}px)`;
-});
-
-// 🌟 HERO SLIDESHOW
+// HERO SLIDESHOW
 const heroImages = [
   "https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck",
   "YOUR_SECOND_IMAGE_LINK",
   "YOUR_THIRD_IMAGE_LINK"
 ];
-let currentIndex = 0;
-const hero = document.querySelector(".hero");
-function changeHeroBg() {
-  currentIndex = (currentIndex + 1) % heroImages.length;
-  hero.style.backgroundImage = `url('${heroImages[currentIndex]}')`;
+let currentIndex=0;
+const hero=document.querySelector(".hero");
+function changeHeroBg(){
+currentIndex=(currentIndex+1)%heroImages.length;
+hero.style.backgroundImage=`url('${heroImages[currentIndex]}')`;
 }
-hero.style.backgroundImage = `url('${heroImages[0]}')`;
-setInterval(changeHeroBg, 5000);
+hero.style.backgroundImage=`url('${heroImages[0]}')`;
+setInterval(changeHeroBg,5000);
 </script>
-
 </body>
 </html>
