@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nightshade Films</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
@@ -161,7 +160,6 @@ nav.show{display:flex}
 <header>
 <div class="logo">Nightshade</div>
 <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-
 <nav id="nav">
 <a href="#home">Home</a>
 <a href="#gallery">Gallery</a>
@@ -189,19 +187,15 @@ nav.show{display:flex}
 <!-- BOOKING -->
 <section id="booking">
 <h2>Book & Pay</h2>
-
 <form onsubmit="startPayment(event)">
 <input id="name" placeholder="Name" required>
 <input id="date" type="date" required>
-
 <select id="service">
 <option value="Wedding - 15000">Wedding - KES 15,000</option>
 <option value="Burial - 10000">Burial - KES 10,000</option>
 <option value="Livestream - 8000">Livestream - KES 8,000</option>
 </select>
-
 <textarea id="details"></textarea>
-
 <button>Proceed</button>
 </form>
 
@@ -210,11 +204,9 @@ nav.show{display:flex}
 <p>Amount: <span id="amount"></span></p>
 <button onclick="confirmBooking()">I Have Paid</button>
 </div>
-
 </section>
 
 <div class="theme-btn" onclick="toggleTheme()">🌗</div>
-
 <a class="whatsapp" href="https://wa.me/254XXXXXXXXX">Chat</a>
 
 <div class="lightbox" onclick="this.style.display='none'">
@@ -222,113 +214,113 @@ nav.show{display:flex}
 </div>
 
 <script>
-
 /* LOGIN */
 const ADMIN_USER="admin";
 const ADMIN_PASS="1234";
 
 function login(){
-if(username.value===ADMIN_USER && password.value===ADMIN_PASS){
-localStorage.setItem("admin","true");
-loginBox.style.display="none";
-adminPanel.style.display="block";
-}else{
-error.innerText="Wrong details";
-}
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  if(user===ADMIN_USER && pass===ADMIN_PASS){
+    localStorage.setItem("admin","true");
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("adminPanel").style.display="block";
+  } else {
+    document.getElementById("error").innerText="Wrong login details";
+  }
 }
 
 window.onload=function(){
-if(localStorage.getItem("admin")==="true"){
-loginBox.style.display="none";
-adminPanel.style.display="block";
-}
+  if(localStorage.getItem("admin")==="true"){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("adminPanel").style.display="block";
+  }
 }
 
 /* LOGOUT */
 function logout(){
-localStorage.removeItem("admin");
-location.reload();
+  localStorage.removeItem("admin");
+  location.reload();
 }
 
 /* MENU */
 function toggleMenu(){
-nav.classList.toggle("show");
+  document.getElementById("nav").classList.toggle("show");
 }
 
 /* THEME */
 function toggleTheme(){
-document.body.classList.toggle("light-mode");
+  document.body.classList.toggle("light-mode");
 }
 
 /* HERO TEXT */
-let txt=hero-text.innerText;
-hero-text.innerHTML="";
+let txt=document.getElementById("hero-text").innerText;
+document.getElementById("hero-text").innerHTML="";
 txt.split("").forEach((c,i)=>{
-let s=document.createElement("span");
-s.innerHTML=c===" "?"&nbsp;":c;
-s.style.animationDelay=i*0.1+"s";
-hero-text.appendChild(s);
+  let s=document.createElement("span");
+  s.innerHTML=c===" "?"&nbsp;":c;
+  s.style.animationDelay=i*0.1+"s";
+  document.getElementById("hero-text").appendChild(s);
 });
 
 /* HERO SLIDE */
 let imgs=["https://res.cloudinary.com/drrratc4o/image/upload/f_auto,q_auto/85BBFC31-973D-4DD5-9D4A-B3D068532373_k8wrck"];
 let i=0;
 setInterval(()=>{
-i=(i+1)%imgs.length;
-document.querySelector(".hero").style.backgroundImage=`url('${imgs[i]}')`;
+  i=(i+1)%imgs.length;
+  document.querySelector(".hero").style.backgroundImage=`url('${imgs[i]}')`;
 },4000);
 
 /* GALLERY */
-fileInput.onchange=e=>{
-let file=e.target.files[0];
-let url=URL.createObjectURL(file);
+document.getElementById("fileInput").onchange=e=>{
+  let file=e.target.files[0];
+  let url=URL.createObjectURL(file);
 
-let div=document.createElement("div");
-div.className="item";
+  let div=document.createElement("div");
+  div.className="item";
 
-if(file.type.startsWith("video")){
-let v=document.createElement("video");
-v.src=url;
-v.muted=true;
-v.loop=true;
-v.onmouseenter=()=>v.play();
-v.onmouseleave=()=>v.pause();
-div.appendChild(v);
-}else{
-let img=document.createElement("img");
-img.src=url;
-img.onclick=()=>openLight(url);
-div.appendChild(img);
-}
+  if(file.type.startsWith("video")){
+    let v=document.createElement("video");
+    v.src=url;
+    v.muted=true;
+    v.loop=true;
+    v.onmouseenter=()=>v.play();
+    v.onmouseleave=()=>v.pause();
+    div.appendChild(v);
+  }else{
+    let img=document.createElement("img");
+    img.src=url;
+    img.onclick=()=>openLight(url);
+    div.appendChild(img);
+  }
 
-let heart=document.createElement("div");
-heart.className="heart";
-heart.onclick=()=>heart.classList.toggle("liked");
-div.appendChild(heart);
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.onclick=()=>heart.classList.toggle("liked");
+  div.appendChild(heart);
 
-gallery.appendChild(div);
+  document.getElementById("gallery").appendChild(div);
 };
 
 /* LIGHTBOX */
 function openLight(src){
-lightImg.src=src;
-document.querySelector(".lightbox").style.display="flex";
+  document.getElementById("lightImg").src=src;
+  document.querySelector(".lightbox").style.display="flex";
 }
 
 /* MPESA */
 function startPayment(e){
-e.preventDefault();
-let service=document.getElementById("service").value;
-let amount=service.split("-")[1];
-amount.innerText="KES "+amount;
-paymentBox.style.display="block";
+  e.preventDefault();
+  let service=document.getElementById("service").value;
+  let amountVal=service.split("-")[1];
+  document.getElementById("amount").innerText="KES "+amountVal;
+  document.getElementById("paymentBox").style.display="block";
 }
 
 function confirmBooking(){
-let msg=`Booking:%0AName:${name.value}%0AService:${service.value}`;
-window.open(`https://wa.me/254XXXXXXXXX?text=${msg}`);
+  let msg=`Booking:%0AName:${document.getElementById("name").value}%0AService:${document.getElementById("service").value}`;
+  window.open(`https://wa.me/254XXXXXXXXX?text=${msg}`);
 }
-
 </script>
 
 </body>
